@@ -1,0 +1,20 @@
+{
+  "name": "nexturn_testing_assignment",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "jasmine": "^5.5.0",
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "jsdom": "^26.0.0",
+    "nexturn_testing_assignment": "file:"
+  }
+}
