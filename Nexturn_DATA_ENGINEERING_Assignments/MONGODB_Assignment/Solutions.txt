@@ -1,0 +1,127 @@
+*************************1********************
+
+db.users.aggregate([
+  {
+    $lookup: {
+      from: "orders",
+      localField: "userId",
+      foreignField: "userId",
+      as: "userOrders"
+    }
+  },
+  {
+    $unwind: "$userOrders"
+  },
+  {
+    $group: {
+      _id: "$userId",
+      totalSpent: { $sum: "$userOrders.totalAmount" },
+      name: { $first: "$name" }
+    }
+  },
+  {
+    $match: {
+      totalSpent: { $gt: 500 }
+    }
+  }
+]);
+
+**************************2***************************
+db.products.aggregate([
+  {
+    $unwind: "$ratings"
+  },
+  {
+    $group: {
+      _id: "$productId",
+      name: { $first: "$name" },
+      avgRating: { $avg: "$ratings.rating" }
+    }
+  },
+  {
+    $match: {
+      avgRating: { $gte: 4 }
+    }
+  }
+]);
+
+ ************************3************************
+ db.orders.aggregate([
+  {
+    $match: {
+      orderDate: {
+        $gte: ISODate("2024-12-01T00:00:00Z"),
+        $lte: ISODate("2024-12-31T23:59:59Z")
+      }
+    }
+  },
+  {
+    $lookup: {
+      from: "users",
+      localField: "userId",
+      foreignField: "userId",
+      as: "userDetails"
+    }
+  },
+  {
+    $unwind: "$userDetails"
+  },
+  {
+    $project: {
+      orderId: 1,
+      orderDate: 1,
+      totalAmount: 1,
+      userName: "$userDetails.name"
+    }
+  }
+]);
+
+**********************4*********************
+
+db.orders.aggregate([
+  {
+    $match: {
+      status: "Delivered"
+    }
+  },
+  {
+    $unwind: "$items"
+  },
+  {
+    $group: {
+      _id: "$items.productId",
+      totalQuantity: { $sum: "$items.quantity" }
+    }
+  },
+  {
+    $project: {
+      productId: "$_id",
+      totalQuantity: 1,
+      _id: 0
+    }
+  }
+]).forEach(order => {
+  db.products.updateOne(
+    { productId: order.productId },
+    { $inc: { stock: -order.totalQuantity } }
+  );
+});
+
+*************************5***********************
+db.warehouses.insertMany([
+  {
+    "warehouseId": "W001",
+    "location": { "type": "Point", "coordinates": [-74.006, 40.7128] }, // New York
+    "products": ["P001", "P002", "P003"]
+  },
+  {
+    "warehouseId": "W002",
+    "location": { "type": "Point", "coordinates": [-118.2437, 34.0522] }, // Los Angeles
+    "products": ["P004", "P005", "P006"]
+  },
+  {
+    "warehouseId": "W003",
+    "location": { "type": "Point", "coordinates": [-87.6298, 41.8781] }, // Chicago
+    "products": ["P001", "P007", "P008"]
+  }
+]);

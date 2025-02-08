@@ -1,0 +1,37 @@
+1.
+sqlite> SELECT Name FROM Employees WHERE HireDate > '2021-01-01';
+Alice
+Charlie
+
+2.
+sqlite> SELECT DepartmentId, AVG(Salary) AS average_salary FROM Employees GROUP BY DepartmentId;
+101|75000.0
+102|60000.0
+103|75000.0
+
+3.
+sqlite> SELECT D.DepartmentName AS DepartmentName
+   ...> FROM Departments D
+   ...> JOIN (
+(x1...>     SELECT DepartmentID, SUM(Salary) AS total_Salary
+(x1...>     FROM Employees
+(x1...>     GROUP BY DepartmentID
+(x1...>     ORDER BY total_Salary DESC
+(x1...>     LIMIT 1
+(x1...> ) AS DeptSalary ON D.DepartmentID = DeptSalary.DepartmentID;
+HR
+
+4.
+sqlite> SELECT D.DepartmentName
+  ...> FROM Departments D
+  ...> LEFT JOIN Employees E ON D.DepartmentID = E.DepartmentID
+  ...> WHERE E.EmployeeID IS NULL;
+
+5.
+sqlite> SELECT E.EmployeeID, E.Name AS EmployeeName, E.Salary, E.HireDate, D.DepartmentName
+   ...> FROM Employees E
+   ...> INNER JOIN Departments D ON E.DepartmentID = D.DepartmentID;
+1|Alice|70000|2021-01-15|HR
+2|Bob|60000|2020-03-10|IT
+3|Charlie|80000|2022-05-20|HR
+4|Diana|75000|2019-07-25|Finance

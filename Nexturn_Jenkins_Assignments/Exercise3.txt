@@ -1,0 +1,43 @@
+Exercise 3: Freestyle Job - Flask Application Deployment
+
+1. Objective: Automate the deployment of a Flask application.
+
+2. Steps:
+
+o Create a Freestyle Job.
+
+o Configure the job to:
+
+▪ Pull the Flask application repository from GitHub.
+
+▪ Set up a virtual environment using Python:
+
+python -m venv venv .\venv\Scripts\activate pip install -r requirements.txt
+
+▪ Start the Flask development server.
+
+o Add a post-build action to verify the server is running (e.g., using curl or a similar tool to hit a test endpoint).
+
+3. Task: Test the application deployment by accessing it via localhost.
+***********************************************************************************
+1. Open Jenkins Dashboard.
+2. Click "New Item".
+3. Enter a name (e.g., Deploy_Flask_App).
+4. Select "Freestyle project" and click "OK".
+5. Go to "Source Code Management".
+6. Select Git and enter the repository URL (e.g., https://github.com/user/flask-app.git).
+7. Specify the branch (e.g., main or master).
+8. Scroll down to "Build" section → Click "Add build step" → Select "Execute Windows batch command".
+cd %WORKSPACE%
+python -m venv venv
+call venv\Scripts\activate
+pip install -r requirements.txt
+9. Add another build step: "Execute Windows batch command".
+call venv\Scripts\activate
+python app.py
+10. Scroll down to "Post-build Actions".
+11. Click "Add post-build action" → "Execute Windows batch command".(curl http://127.0.0.1:5000/)
+12. Click "Save".
+13. Click "Build Now".
+14. Check Console Output to verify the process.
+15. visit "http://127.0.0.1:5000/"

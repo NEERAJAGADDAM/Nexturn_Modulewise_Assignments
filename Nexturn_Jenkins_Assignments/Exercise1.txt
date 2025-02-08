@@ -1,0 +1,29 @@
+Exercise 1: Freestyle Job - Windows File Transfer Automation
+
+1. Objective: Automate file transfer between two directories on a Windows machine.
+
+2. Steps:
+
+o Create a Freestyle Job in Jenkins. o Configure the job to execute a Windows batch command:
+
+xcopy C:\source-directory C:\target-directory /E /I /H /Y
+
+o Add a post-build action to check the success of the transfer using a custom message.
+
+3. Task: Test the job by placing some files in the source directory and verifying they are transferred to the target directory.
+
+
+***********************************************************
+ 1. Run java -jar jenkins.war in packages folder which contains jenkins.war file
+ 2. Open the browser and run loclahost:8080
+ 3. Click on "New Item" on the jenkins dashboard to crete a new job
+ 4. Provide a name as windows_file_transfer 
+ 5. Select "freestyle project" and click ok button
+ 6. In the Build section, click "Add build step" → "Execute Windows batch command".
+ 7. xcopy C:\source-directory C:\target-directory /E /I /H /Y
+ 8. Click "Add post-build action" → "Publish build status".
+ 9. Click "Save".
+ 10. Place some test files in C:\source-directory.
+ 11. Click "Build Now".
+ 12. Check C:\target-directory to confirm the files were transferred.
+ 13. Go to "Console Output" in Jenkins to see the execution log.

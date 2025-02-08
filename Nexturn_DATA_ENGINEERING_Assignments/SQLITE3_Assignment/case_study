@@ -1,0 +1,21 @@
+SQLite3 Exercises
+
+Scenario: Employee Management System
+
+A company maintains a database with two tables:
+
+• Employees: Stores information about employees.
+
+• Departments: Stores information about departments.
+
+Questions
+
+Q1. Write a query to list the names of employees hired after January 1, 2021.
+
+Q2. Write a query to calculate the average salary of employees in each department.
+
+Q3. Write a query to find the department name where the total salary is the highest.
+
+Q4. Write a query to list all departments that currently have no employees assigned.
+
+Q5. Write a query to fetch all employee details along with their department names.

@@ -1,0 +1,53 @@
+sqlite> CREATE TABLE Departments (
+(x1...>     DepartmentID INT PRIMARY KEY,
+(x1...>     DepartmentName VARCHAR(50)
+(x1...> );
+sqlite> .tables
+Departments
+sqlite> CREATE TABLE Employees (
+(x1...>     EmployeeID INT PRIMARY KEY,
+(x1...>     Name VARCHAR(50),
+(x1...>     DepartmentID INT,
+(x1...>     Salary INT,
+(x1...>     HireDate DATE,
+(x1...>     FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+(x1...> );
+sqlite> .tables
+Departments  Employees
+sqlite> .schema Departments
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(50)
+);
+sqlite> .schema Employees
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    DepartmentID INT,
+    Salary INT,
+    HireDate DATE,
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+);
+
+
+
+sqlite> INSERT INTO Departments (DepartmentID, DepartmentName) VALUES
+   ...> (101, 'HR'),
+   ...> (102, 'IT'),
+   ...> (103, 'Finance');
+sqlite> INSERT INTO Employees (EmployeeID, Name, DepartmentID, Salary, HireDate) VALUES
+   ...> (1, 'Alice', 101, 70000, '2021-01-15'),
+   ...> (2, 'Bob', 102, 60000, '2020-03-10'),
+   ...> (3, 'Charlie', 101, 80000, '2022-05-20'),
+   ...> (4, 'Diana', 103, 75000, '2019-07-25');
+sqlite> SELECT * FROM Departments;
+101|HR
+102|IT
+103|Finance
+sqlite> SELECT * FROM Employees;
+1|Alice|101|70000|2021-01-15
+2|Bob|102|60000|2020-03-10
+3|Charlie|101|80000|2022-05-20
+4|Diana|103|75000|2019-07-25
+
+

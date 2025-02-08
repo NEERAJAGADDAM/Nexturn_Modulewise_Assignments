@@ -1,0 +1,119 @@
+Exercise 4: Pipeline Job - End-to-End CI/CD for a React Application
+
+1. Objective: Implement a CI/CD pipeline for a React web application.
+
+2. Steps:
+
+o Create a Pipeline Job.
+
+o Write a Jenkinsfile to:
+
+▪ Clone the React project from GitHub.
+
+▪ Install dependencies (npm install).
+
+▪ Run tests (npm test).
+
+▪ Build the project (npm run build).
+
+▪ Deploy the application by copying the build folder to a deployment directory.
+
+o Add stages for:
+
+▪ Linting using ESLint.
+
+▪ Post-deployment testing using curl to verify the app is running.
+
+3. Task: Run the pipeline and validate each stage's output.
+*************************************************************************
+1. ESLint Installed (npm install -g eslint).
+2. Open Jenkins Dashboard.
+3. Click "New Item".
+4. Enter a job name (e.g., React_CI_CD_Pipeline).
+5. Select "Pipeline" and click "OK".
+6. Add it to your GitHub repo (Jenkinsfile in the root).
+7. Define it directly in Jenkins under "Pipeline Script".
+************************ CODE **********************************
+pipeline {
+    agent any
+
+    environment {
+        DEPLOY_DIR = 'C:\\deployment-directory'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/user/react-app.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    bat 'npm install'
+                }
+            }
+        }
+
+        stage('Linting') {
+            steps {
+                script {
+                    bat 'npm run lint'
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                script {
+                    bat 'npm test'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    bat 'npm run build'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    bat "xcopy /E /I /Y build ${DEPLOY_DIR}"
+                }
+            }
+        }
+
+        stage('Post-Deployment Verification') {
+            steps {
+                script {
+                    bat 'curl http://localhost:3000'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment successful!'
+        }
+        failure {
+            echo 'Deployment failed!'
+        }
+    }
+}
+
+********************************************
+8. Scroll down to the Pipeline section in Jenkins.
+9. Select Pipeline script from SCM.
+10. Choose Git and enter your repository URL.
+11. Specify the branch (e.g., main).
+12. Set Script Path to Jenkinsfile.
+13. Click "Save".
+14. Click "Build Now" to trigger the pipeline.
+15. Check each stage's logs under "Console Output".
+16. Open http://localhost:3000 to verify deployment.

@@ -1,0 +1,117 @@
+Exercise 5: Pipeline Job - Deploy a Flask Application with Gunicorn
+
+1. Objective: Automate the deployment of a Flask application with Gunicorn on Windows.
+
+2. Steps:
+
+o Create a Pipeline Job.
+
+o Write a Jenkinsfile to:
+
+▪ Clone a Flask application from GitHub.
+
+▪ Set up a Python virtual environment.
+
+▪ Install required packages using pip install -r requirements.txt.
+
+▪ Configure and start the Gunicorn server:
+
+gunicorn -b 127.0.0.1:8000 app:app
+
+▪ Verify the deployment using a curl command in the pipeline.
+
+o Add stages for:
+
+▪ Unit tests using pytest.
+
+▪ Post-deployment endpoint checks.
+
+3. Task: Trigger the pipeline and ensure the Flask app is accessible on localhost.
+*************************************************************************************
+1. Gunicorn Installed (pip install gunicorn).
+2. Pytest Installed (pip install pytest).
+3. Open Jenkins Dashboard.
+4. Click "New Item".
+5. Enter a job name (e.g., Flask_Gunicorn_Pipeline).
+6. Select "Pipeline" and click "OK".
+7. Add it to your GitHub repo (Jenkinsfile in the root).
+8. Define it directly in Jenkins under "Pipeline Script".
+**********************CODE*******************************
+pipeline {
+    agent any
+
+    environment {
+        DEPLOY_DIR = 'C:\\flask-deploy'
+        VENV_DIR = 'C:\\flask-deploy\\venv'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/user/flask-app.git'
+            }
+        }
+
+        stage('Setup Virtual Environment') {
+            steps {
+                script {
+                    bat """
+                    python -m venv ${VENV_DIR}
+                    call ${VENV_DIR}\\Scripts\\activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                    """
+                }
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                script {
+                    bat """
+                    call ${VENV_DIR}\\Scripts\\activate
+                    pytest
+                    """
+                }
+            }
+        }
+
+        stage('Start Gunicorn Server') {
+            steps {
+                script {
+                    bat """
+                    call ${VENV_DIR}\\Scripts\\activate
+                    gunicorn -b 127.0.0.1:8000 app:app --daemon
+                    """
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                script {
+                    bat 'curl http://127.0.0.1:8000'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Flask application deployed successfully with Gunicorn!'
+        }
+        failure {
+            echo 'Deployment failed!'
+        }
+    }
+}
+***********************************************************
+9. Scroll down to the Pipeline section in Jenkins.
+10. Select Pipeline script from SCM.
+11. Choose Git and enter your repository URL.
+12. Specify the branch (e.g., main).
+13. Set Script Path to Jenkinsfile.
+14. Click "Save".
+15. Click "Build Now" to trigger the pipeline.
+16. Check each stage's logs under "Console Output".
+17. Open http://127.0.0.1:8000 to verify deployment.

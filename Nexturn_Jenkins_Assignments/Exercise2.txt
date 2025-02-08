@@ -1,0 +1,43 @@
+Exercise 2: Freestyle Job - Build and Deploy a JavaScript Project
+
+1. Objective: Build and deploy a JavaScript-based web project.
+
+2. Steps:
+
+o Create a Freestyle Job.
+
+o Configure the job to:
+
+▪ Clone a JavaScript repository (e.g., a React project) from GitHub.
+
+▪ Run npm install to install dependencies.
+
+▪ Build the project using npm run build.
+
+▪ Copy the build folder to a deployment directory using a Windows batch command or PowerShell.
+
+o Archive the build artifacts for future reference.
+
+3. Task: Verify the deployment by accessing the web application from the deployment directory.
+
+*******************************************************************************************
+1. Open Jenkins Dashboard.
+2. Click "New Item".
+3. Enter a name (e.g., Deploy_JS_Project).
+4. Select "Freestyle project" and click "OK".
+5. Go to "Source Code Management".
+6. Select Git and enter the repository URL (e.g., https://github.com/user/project.git).
+7. Specify the branch (e.g., main or master).
+8. Scroll down to "Build" section → Click "Add build step" → Select "Execute Windows batch command".
+9. write the below  code
+   cd %WORKSPACE%
+   npm install
+10. Add another build step: "Execute Windows batch command".(npm run build)
+11. Add another build step: "Execute Windows batch command".(xcopy /E /I /Y %WORKSPACE%\build C:\deployment-directory)
+12. Go to "Post-build Actions".
+13. Click "Archive the artifacts".(build/**)
+14. Click "Save".
+15. Click "Build Now".
+16. Check Console Output to verify the process.
+
+
