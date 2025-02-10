@@ -1,0 +1,99 @@
+Exercise 3: Deploy a Flask Application (Dynamic Web App)
+
+Objective: Deploy a Python Flask application using Azure App Service.
+
+1. Create a Flask app:
+
+from flask import Flask app = Flask(__name__)
+
+@app.route('/') def home():
+
+return "Hello, Azure Flask App!"
+
+if __name__ == '__main__': app.run(debug=True)
+
+2. Push the code to a GitHub repository.
+
+3. In the Azure Portal, navigate to App Services > Create.
+
+4. Configure:
+
+o Runtime Stack: Python 3.10 (or latest).
+
+o Deployment Source: Connect your GitHub repository.
+
+5. Deploy the Flask app and verify it by accessing the public URL
+**************************************************************************************
+Here’s a step-by-step guide to deploying a **Flask application** on **Azure App Service** using **GitHub**.
+
+---
+
+### Step 1: Create a Flask App ###
+1. Install Flask:
+   ```sh
+   pip install flask
+   ```
+2. Create a new Python file (e.g., `app.py`) and add the following code:
+
+   ```python
+   from flask import Flask
+
+   app = Flask(__name__)
+
+   @app.route('/')
+   def home():
+       return "Hello, Azure Flask App!"
+
+   if __name__ == '__main__':
+       app.run(host='0.0.0.0', port=8000, debug=True)
+   ```
+
+3. Create a requirements.txt file to specify dependencies:
+   ```txt
+   flask
+   ```
+
+---
+
+### Step 2: Push the Code to GitHub ###
+1. Initialize a Git repository:
+   ```sh
+   git init
+   git add .
+   git commit -m "Initial Flask app"
+   ```
+2. Create a new GitHub repository and push your code:
+   ```sh
+   git remote add origin https://github.com/your-username/flask-azure-app.git
+   git branch -M main
+   git push -u origin main
+   ```
+
+
+### Step 3: Create an Azure App Service ###
+1. Go to Azure Portal: [https://portal.azure.com](https://portal.azure.com)
+2. Navigate to App Services > Click + Create.
+3. Configure:
+   - Subscription: Select your Azure subscription.
+   - Resource Group: Create a new one or use an existing one.
+   - App Name: Provide a unique name (e.g., `flask-app-azure`).
+   - Publish: Select Code.
+   - Runtime Stack: Choose Python 3.10 
+   - Operating System: Select Linux.
+   - Region: Choose the closest location.
+
+4. Click Review + Create, then Create.
+
+
+### Step 4: Deploy via GitHub Actions ####
+1. Once the App Service is created, go to Deployment Center.
+2. Choose GitHub as the deployment source.
+3. Authenticate and select your repository (`flask-azure-app`).
+4. Click Save to trigger the deployment.
+
+### Step 5: Verify Deployment ####
+1. Navigate to **https://your-app-name.azurewebsites.net**.
+2. You should see:
+   ```
+   Hello, Azure Flask App!
+   ```

@@ -1,0 +1,90 @@
+Exercise 1: Create and Configure a Virtual Machine
+
+Objective: Create and configure Ubuntu and Windows Virtual Machines on Azure Portal.
+
+1. Create an Ubuntu VM:
+
+o Log in to the Azure Portal. o Navigate to Virtual Machines > Create. o Choose Ubuntu Server 20.04 LTS. o Configure:
+
+▪ Size: Standard_B1s (or similar)
+
+▪ Authentication Type: SSH (generate a key pair if not available).
+
+▪ Inbound Port: Allow SSH (port 22).
+
+o Deploy and connect using SSH.
+
+2. Create a Windows VM:
+
+o Follow similar steps, selecting Windows Server 2022.
+
+o Configure:
+
+▪ Size: Standard_B1s (or similar)
+
+▪ Authentication Type: Username and Password.
+
+▪ Inbound Port: Allow RDP (port 3389).
+
+o Deploy and connect using RDP.
+
+3. Task:
+
+o Install Apache or IIS on the respective VMs. o Verify by accessing the default web page from your local browser.
+*****************************************************************************************************
+1. Log in to Azure Portal
+2. Click Create a Resource → Select Virtual Machine.
+
+3. Configure Ubuntu VM
+   Image: Choose Ubuntu Server 20.04 LT.
+   Size: Select Standard_B1s (or any suitable option).
+   Authentication Type: Select SSH.
+   Inbound Ports: Allow SSH (port 22).
+
+4. Review & Deploy
+   Click Review + Create, then Create.
+   Once deployment is complete, go to the Virtual Machine Overview page.
+
+5. Connect via SSH
+   - Copy the Public IP Address from the VM page.
+   - Use a terminal (Linux/Mac) or PowerShell (Windows) to connect:
+   - If prompted, add the key to known hosts.
+6. Navigate to Virtual Machines
+   - Click Create a Resource → Select Virtual Machine.
+
+2. **Configure Windows VM**
+   - **Image**: Choose **Windows Server 2022**.
+   - **Size**: Select **Standard_B1s** (or any suitable option).
+   - **Authentication Type**: Choose **Username and Password**.
+   - **Inbound Ports**: Allow **RDP (port 3389)**.
+
+3. **Review & Deploy**
+   - Click **Review + Create**, then **Create**.
+   - Once deployment is complete, go to the **Virtual Machine Overview** page.
+
+4. Connect via RDP
+   - Copy the Public IP Address.
+   - Open Remote Desktop Connection (RDP):
+   - Windows: Press `Win + R`, type `mstsc`, and hit Enter.
+   - Enter the VM's Public IP and login with the credentials you set.
+
+### Step 3: Install Web Servers ####
+
+1. Connect to the VM via SSH.
+2. Run the following commands to install Apache:
+   ```sh
+   sudo apt update
+   sudo apt install apache2 -y
+   sudo systemctl start apache2
+   sudo systemctl enable apache2
+   ```
+3. Verify by accessing `http://<VM_Public_IP>` from your local browser.
+
+#### For Windows (Install IIS) ####
+1. Connect to the Windows VM via RDP.
+2. Open PowerShell as Administrator and run:
+   ```powershell
+   Install-WindowsFeature -name Web-Server -IncludeManagementTools
+   ```
+
+

@@ -1,0 +1,109 @@
+Exercise 4: Set Up and Use an Azure SQL Database
+
+Objective: Create an Azure SQL Database and connect to it from your local machine.
+
+1. Navigate to SQL Databases > Create.
+
+2. Configure:
+
+o Database Name: StudentDB. o Server: Create a new server with username and password.
+
+o Compute + Storage: Use the free tier.
+
+3. Deploy the database.
+
+4. Connect using Azure Data Studio or SQL Server Management Studio (SSMS).
+
+5. Task:
+
+o Create a table Students with columns ID, Name, and Age. o Insert sample data and query it.
+
+Here’s a step-by-step guide to setting up and using **Azure SQL Database** and connecting from your local machine.
+
+---
+*************************************************************************************
+
+## Step 1: Create an Azure SQL Database ###
+1. **Log in to Azure Portal**: [https://portal.azure.com](https://portal.azure.com)
+2. Navigate to **SQL Databases** and click **+ Create**.
+3. Configure the database:
+   - **Database Name**: `StudentDB`
+   - **Subscription**: Select your Azure subscription.
+   - **Resource Group**: Create a new one or use an existing one.
+   - **Server**: Click **Create New**, and provide:
+     - **Server Name**: (e.g., `studentdb-server`)
+     - **Location**: Closest to you
+     - **Authentication**: Use **SQL Authentication**
+     - **Admin Username**: (e.g., `adminuser`)
+     - **Password**: (Choose a secure password)
+   - **Compute + Storage**: Select **Free Tier** (if available).
+4. Click **Review + Create**, then **Create**.
+
+
+## Step 2: Configure Firewall to Allow Local Connections ###
+1. After deployment, go to **SQL Server** (not database).
+2. Under **Networking**, set **Public Access** to "Selected Networks."
+3. Click **+ Add Client IP** to allow your machine access.
+4. Save the settings.
+
+
+## Step 3: Connect to the Database ###
+### **Using Azure Data Studio**
+1. Open **Azure Data Studio**.
+2. Click **New Connection** and enter:
+   - **Server**: `<your-server-name>.database.windows.net`
+   - **Database**: `StudentDB`
+   - **Authentication**: SQL Login
+   - **Username**: `adminuser`
+   - **Password**: (your chosen password)
+   - **Port**: `1433`
+3. Click **Connect**.
+
+### Using SQL Server Management Studio (SSMS) ###
+1. Open **SSMS**.
+2. Click **Connect > Database Engine**.
+3. Enter:
+   - **Server Name**: `<your-server-name>.database.windows.net,1433`
+   - **Authentication**: SQL Server Authentication
+   - **Username**: `adminuser`
+   - **Password**: (your chosen password)
+4. Click **Connect**.
+
+
+## Step 4: Create and Query a Table ##
+1. Open a new query window.
+2. Run the following SQL script to create a table:
+
+   ```sql
+   CREATE TABLE Students (
+       ID INT PRIMARY KEY IDENTITY(1,1),
+       Name NVARCHAR(100),
+       Age INT
+   );
+   ```
+
+3. Insert sample data:
+
+   ```sql
+   INSERT INTO Students (Name, Age) VALUES
+   ('Alice', 20),
+   ('Bob', 22),
+   ('Charlie', 21);
+   ```
+
+4. Query the table:
+
+   ```sql
+   SELECT * FROM Students;
+   ```
+
+
+## Step 5: Verify Data ##
+After running the `SELECT` statement, you should see output like:
+
+| ID | Name    | Age |
+|----|--------|-----|
+| 1  | Alice  | 20  |
+| 2  | Bob    | 22  |
+| 3  | Charlie | 21 |
+

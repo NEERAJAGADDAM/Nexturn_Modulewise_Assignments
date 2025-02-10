@@ -1,0 +1,171 @@
+Exercise 5: Integrate Flask App with Azure SQL Database
+
+Objective: Connect a Flask app to Azure SQL Database and perform CRUD operations.
+
+1. Use the Flask app from Exercise 3.
+
+2. Install required libraries:
+
+pip install flask pyodbc
+
+3. Modify the app to connect to the SQL Database:
+
+import pyodbc conn = pyodbc.connect(
+
+'DRIVER={ODBC Driver 17 for SQL Server};'
+
+'SERVER=<your_server>.database.windows.net;'
+
+'DATABASE=StudentDB;'
+
+'UID=<your_username>;'
+
+'PWD=<your_password>'
+
+) cursor = conn.cursor()
+
+4. Add a route to fetch and display data from the Students table.
+
+5. Deploy the updated app to Azure App Service.
+
+6. Task:
+
+o Verify CRUD functionality by interacting with the app via its public URL.
+************************************************************************************
+
+
+## Step 1: Set Up Your Flask App ##
+Use the Flask app from **Exercise 3** or create a new one.
+
+1. Install the required libraries:
+   ```sh
+   pip install flask pyodbc
+   ```
+
+2. Update your **`app.py`** file to include the database connection:
+
+---
+
+## Step 2: Connect Flask to Azure SQL Database ##
+Modify **`app.py`**:
+
+```python
+from flask import Flask, jsonify, request
+import pyodbc
+
+app = Flask(__name__)
+
+# Azure SQL Database connection
+server = "<your_server>.database.windows.net"
+database = "StudentDB"
+username = "<your_username>"
+password = "<your_password>"
+driver = "{ODBC Driver 17 for SQL Server}"
+
+conn = pyodbc.connect(
+    f"DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}"
+)
+cursor = conn.cursor()
+
+# Route to fetch all students
+@app.route("/students", methods=["GET"])
+def get_students():
+    cursor.execute("SELECT * FROM Students")
+    students = [{"ID": row[0], "Name": row[1], "Age": row[2]} for row in cursor.fetchall()]
+    return jsonify(students)
+
+# Route to add a new student
+@app.route("/students", methods=["POST"])
+def add_student():
+    data = request.get_json()
+    cursor.execute("INSERT INTO Students (Name, Age) VALUES (?, ?)", (data["Name"], data["Age"]))
+    conn.commit()
+    return jsonify({"message": "Student added successfully"}), 201
+
+# Route to update a student's details
+@app.route("/students/<int:id>", methods=["PUT"])
+def update_student(id):
+    data = request.get_json()
+    cursor.execute("UPDATE Students SET Name=?, Age=? WHERE ID=?", (data["Name"], data["Age"], id))
+    conn.commit()
+    return jsonify({"message": "Student updated successfully"})
+
+# Route to delete a student
+@app.route("/students/<int:id>", methods=["DELETE"])
+def delete_student(id):
+    cursor.execute("DELETE FROM Students WHERE ID=?", (id,))
+    conn.commit()
+    return jsonify({"message": "Student deleted successfully"})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000, debug=True)
+```
+
+---
+
+## Step 3: Deploy the Updated Flask App to Azure ##
+1. **Push the changes to GitHub**:
+   ```sh
+   git add .
+   git commit -m "Added Azure SQL Database integration"
+   git push origin main
+   ```
+
+2. **Deploy via Azure App Service**:
+   - Navigate to **Azure Portal > App Services**.
+   - Select your **Flask app**.
+   - Go to **Deployment Center**.
+   - Connect to your **GitHub repository**.
+   - Click **Sync** to trigger deployment.
+
+---
+
+## Step 4: Verify CRUD Functionality ##
+###  Fetch all students ###
+- **URL**: `https://your-app-name.azurewebsites.net/students`
+- **Method**: `GET`
+- **Response**:
+  ```json
+  [
+      {"ID": 1, "Name": "Alice", "Age": 20},
+      {"ID": 2, "Name": "Bob", "Age": 22}
+  ]
+  ```
+
+###  Add a new student ###
+- **Method**: `POST`
+- **URL**: `https://your-app-name.azurewebsites.net/students`
+- **Body**:
+  ```json
+  {
+      "Name": "Charlie",
+      "Age": 21
+  }
+  ```
+- **Response**:
+  ```json
+  {"message": "Student added successfully"}
+  ```
+
+###  Update a student's details ###
+- **Method**: `PUT`
+- **URL**: `https://your-app-name.azurewebsites.net/students/1`
+- **Body**:
+  ```json
+  {
+      "Name": "Alice Updated",
+      "Age": 23
+  }
+  ```
+- **Response**:
+  ```json
+  {"message": "Student updated successfully"}
+  ```
+
+###  Delete a student ###
+- **Method**: `DELETE`
+- **URL**: `https://your-app-name.azurewebsites.net/students/1`
+- **Response**:
+  ```json
+  {"message": "Student deleted successfully"}
+  ```

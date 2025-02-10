@@ -1,0 +1,76 @@
+Exercise 2: Deploy a Static Web Application
+
+Objective: Host a static website using Azure App Service.
+
+1. Navigate to App Services > Create.
+
+2. Choose:
+
+o Runtime Stack: Python 3.10 (or latest). o Operating System: Linux.
+
+o Region: Closest to your location.
+
+3. Deploy the application.
+
+4. Upload a simple static website (e.g., index.html and CSS files) using FTP or the Kudu console.
+
+5. Task:
+
+o Verify the deployment by accessing the site via its public URL.
+
+o Modify the HTML to include a message like: "Welcome to Azure Static Web Apps!
+**************************************************************************************************
+Here’s a step-by-step guide to completing **Exercise 2: Deploy a Static Web Application** on **Azure App Service**.
+
+---
+
+### Step 1: Create an Azure App Service ####
+1. Log in to Azure Portal: [https://portal.azure.com](https://portal.azure.com)
+2. Navigate to App Services: In the left menu, click App Services.
+3. Click + Create and fill in the details:
+   - Subscription: Select your Azure subscription.
+   - Resource Group: Create a new one or use an existing one.
+   - App Name: Provide a unique name (e.g., `my-static-webapp`).
+   - Publish: Select Code.
+   - Runtime Stack: Select Python 3.10(or the latest available).
+   - Operating System: Choose Linux.
+   - Region: Select the region closest to your location.
+
+4. Click Review + Create, then Create.
+
+### Step 2: Deploy the Application ####
+Once the App Service is created:
+
+1. Go to the Deployment Center inside your App Service.
+2. Choose a deployment method:
+   - FTP/SFTP (manual upload)
+   - Kudu Console (built-in file manager)
+   - GitHub Actions (if using Git for version control)
+
+### Step 3: Upload the Static Website ####
+
+1. Navigate to **Deployment Center > FTP Credentials**.
+2. Copy the **FTP Hostname**, **Username**, and **Password**.
+3. Use an FTP client (e.g., FileZilla) to connect.
+4. Upload your `index.html`, `styles.css`, and other files into the `wwwroot` directory.
+
+#### Using Kudu Console ####
+1. Navigate to **https://<your-app-name>.scm.azurewebsites.net**.
+2. Click **Debug Console > CMD**.
+3. Navigate to `/home/site/wwwroot/`.
+4. Click **Upload**, and select your `index.html` and CSS files.
+
+
+### Step 4: Verify Deployment ####
+1. Go to **https://<your-app-name>.azurewebsites.net**.
+2. Your static site should now be live.
+
+### Step 5: Modify HTML ####
+
+1. Open `index.html`.
+2. Add the following message inside the `<body>` tag:
+   ```html
+   <h2>Welcome to Azure Static Web Apps!</h2>
+   ```
+3. Save and upload the modified file using FTP or Kudu.
+4. Refresh your public URL to see the updated content.
